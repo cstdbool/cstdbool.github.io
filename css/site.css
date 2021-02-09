@@ -1,0 +1,18 @@
+body {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+.external-account-icon {
+	width: 16px;
+	height: 16px;
+	margin: 0px 4px;
+}
+
+.section-invisible {
+	opacity: 0.0;
+}
