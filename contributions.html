@@ -1,0 +1,85 @@
+<h1 id="manual-complete-load">Contributions</h1>
+<p>A complete list of my contributions to open-source projects.</p>
+<div id="contributions-container" class="container">
+	<div id="contributions-list" class="row"/>
+</div>
+<script>
+	function showContributionsError(message) {
+		$('#contributions-container').removeClass('container');
+		$('#contributions-container').html('<span class="contributions-error">' + message + '</span>');
+	}
+	async function findNumberOfCommits(owner, repo) {
+		if ((owner == null) || (repo == null))
+			return null;
+		let cacheKey = 'number-of-commits_' + owner + '_' + repo;
+		let numberOfCommits = (($('#' + cacheKey).length > 0) ? $('#' + cacheKey).html() : null);
+		if (numberOfCommits == '')
+			numberOfCommits = null;
+		else if (numberOfCommits != null)
+			return parseInt(numberOfCommits, 10);
+		let continueLoop = true;
+		let i;
+		for (i = 0; continueLoop; ++i) {
+			await $.getJSON('https://api.github.com/repos/' + owner + '/' + repo + '/contributors?anon=0&per_page=100&page=' + i.toString()).then(async function(json) {
+				if (json.length > 0) {
+					let j;
+					for (j = 0; j < json.length; ++j) {
+						let contributor = json[j];
+						if (contributor.login == 'cstdbool') {
+							numberOfCommits = contributor.contributions;
+							continueLoop = false;
+							break;
+						}
+					}
+				} else
+					continueLoop = false;
+			}).catch(async function() {
+				continueLoop = false;
+			});
+		}
+		if ($('#' + cacheKey).length == 0)
+			$('#cache').append('<div id="' + cacheKey + '">' + (numberOfCommits ?? '').toString() + '</div>');
+		return numberOfCommits;
+	}
+	$.getJSON('/data/contributions.json').then(async function(json) {
+		let i, loaded = 0;
+		for (i = 0; i < json.length; ++i) {
+			let contribution = json[i];
+			if ((contribution.name == null) || (contribution.description == null))
+				continue;
+			if (contribution.icon == null) {
+				if (contribution.owner == null)
+					continue;
+				contribution.icon = 'https://github.com/' + contribution.owner + '.png?size=200';
+			}
+			if ((contribution.owner != null) && (contribution.repo != null)) {
+				if (contribution.repoLink == null)
+					contribution.repoLink = 'https://github.com/' + contribution.owner + '/' + contribution.repo;
+				if (contribution.commitsLink == null)
+					contribution.commitsLink = 'https://github.com/' + contribution.owner + '/' + contribution.repo + '/commits?author=cstdbool';
+			}
+			let numberOfCommits = await findNumberOfCommits(contribution.owner, contribution.repo);
+			let html =
+				'<div id="contribution-' + i.toString() + '" class="col-12 mt-4 section-invisible">\n' +
+				'	<div class="row">\n' +
+				'		<div class="col-4 col-sm-2">\n' +
+				'			' + ((contribution.repoLink != null) ? ('<a href="' + contribution.repoLink + '">') : '') + '<img class="w-100" src="' + contribution.icon + '" alt="' + contribution.name + '">' + ((contribution.repoLink != null) ? '</a>' : '') + '\n' +
+				'		</div>\n' +
+				'		<div class="col-8 col-sm-10">\n' +
+				'			<h3>' + contribution.name + '</h3>\n' +
+				'			<p><small>' + contribution.description + '</small></p>\n' +
+				'			<a class="text-decoration-none" href="' + contribution.commitsLink + '">' + ((numberOfCommits != null) ? numberOfCommits.toString() : 'View') + ' commit' + (((numberOfCommits ?? 0) == 1) ? '' : 's') + '</a>\n' +
+				'		</div>\n' +
+				'	</div>\n' +
+				'</div>';
+			$('#contributions-list').append(html);
+			$('#contribution-' + i.toString()).animate({opacity: 1.0}, 300, function() {
+				if (++loaded == json.length)
+					completeLoad();
+			});
+		}
+	}).catch(async function() {
+		showContributionsError('Failed to load the list of contributions.');
+		completeLoad();
+	});
+</script>

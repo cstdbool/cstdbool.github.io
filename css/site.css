@@ -16,3 +16,8 @@ body {
 .section-invisible {
 	opacity: 0.0;
 }
+
+.contributions-error {
+	color: red;
+	font-style: italic;
+}
