@@ -17,6 +17,10 @@ body {
 	opacity: 0.0;
 }
 
+.hometown-image {
+	border-radius: 10px;
+}
+
 .contributions-error {
 	color: red;
 	font-style: italic;
