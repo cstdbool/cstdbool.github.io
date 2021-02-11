@@ -1,0 +1,52 @@
+{
+	"workExperience": [
+		{
+			"name": "AVL-AST",
+			"location": "Zagreb, Croatia",
+			"summary": "Software Development",
+			"details": [
+				"Development & maintenance of enterprise C++ software and components"
+			],
+			"started": "February 2020",
+			"ended": "Ongoing"
+		}
+	],
+	"education": [
+		{
+			"name": "Faculty of Electrical Engineering and Computing",
+			"location": "Zagreb, Croatia",
+			"summary": "B.Sc. in Computer Science",
+			"details": [
+				"Implementation of physically based rendering (PBR), 3D computer graphics",
+				"Reverse engineering and malware analysis, x86 assembly development",
+				"Network programming and server programming, Berkeley sockets (BSD)"
+			],
+			"started": "September 2016",
+			"ended": "July 2019"
+		}
+	],
+	"technicalSkills": [
+		{
+			"section": "Languages",
+			"skills": "C, C++, C#"
+		},
+		{
+			"section": "Technologies",
+			"skills": "OpenGL, WinAPI, Berkeley sockets, .NET"
+		},
+		{
+			"section": "Tools",
+			"skills": "CMake, GCC, Clang, MSVC, Doxygen, Git"
+		}
+	],
+	"miscellaneous": [
+		{
+			"section": "Languages",
+			"skills": "Croatian (native), English (fluent), Italian (basic)"
+		},
+		{
+			"section": "Interests",
+			"skills": "3D & 2D graphics and animation, game development, emulation, low-level"
+		}
+	]
+}

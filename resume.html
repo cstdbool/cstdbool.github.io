@@ -1,2 +1,199 @@
-<h1>R&#233;sum&#233;</h1>
-<p>Dummy</p>
+<h1 id="manual-complete-load">R&#233;sum&#233;</h1>
+<p>Click the button below to download my auto-generated r&#233;sum&#233; as PDF document.</p>
+<script>
+	var resumeWorkExperience = null;
+	var resumeEducation = null;
+	var resumeTechnicalSkills = null;
+	var resumeMiscellaneous = null;
+	var resumeLoaded = false;
+	function downloadResume() {
+		if (!resumeLoaded)
+			return;
+		let key = 'R+@f@U&3LEDasYG&sadYCkZH^Qs*-q%V_e_3!?*423_jnknJP%+n$^URySDp';
+		let cv = new jsPDF({orientation: 'p', unit: 'mm', format: 'a4'});
+		cv.setFont('helvetica', 'normal');
+		cv.setFontSize(32);
+		cv.text(68, 20, 'Antonio Junakovic', null, null, 'center');
+		cv.setFont('helvetica', 'italic');
+		cv.setFontSize(13);
+		cv.text(68, 27, decryptFromBase64('DbUUFTsyi+mqbF4Q5GLMgebN+KUvOKT2Uk3y5WFN2iRyAoV9Pgok5i9ZBPgN2xsa', key), null, null, 'center');
+		cv.setFont('courier', 'normal');
+		cv.setFontSize(14);
+		cv.text(196, 15, decryptFromBase64('FzPWpLiOxOkzzw18V2l3pwEmKDNSqxvt', key), null, null, 'right');
+		cv.text(196, 21, decryptFromBase64('DzmutTPP5lQz9YlnzVjaRpr/ezQ=', key), null, null, 'right');
+		cv.text(196, 27, window.location.origin.split('/').splice(0, 3).join('/'), null, null, 'right');
+		cv.setFont('helvetica', 'normal');
+		cv.setFontSize(16);
+		cv.text(18, 50, 'WORK EXPERIENCE');
+		cv.line(10, 53, 200, 53);
+		let yOffset = 62;
+		for (i = 0; i < resumeWorkExperience.length; ++i) {
+			let workExperience = resumeWorkExperience[i];
+			let height = 19 + 7 * workExperience.details.length;
+			if (yOffset + height > 280) {
+				cv.addPage();
+				yOffset = 20;
+			}
+			cv.setFont('helvetica', 'bold');
+			cv.setFontSize(14);
+			cv.text(16, yOffset, workExperience.name + ', ' + workExperience.location);
+			cv.setFont('helvetica', 'normal');
+			cv.setFontSize(16);
+			cv.text(21, yOffset + 8, workExperience.summary);
+			cv.setFontSize(12);
+			cv.text(195, yOffset + 8, workExperience.started + ' - ' + workExperience.ended, null, null, 'right');
+			cv.setFontSize(13);
+			let j;
+			for (j = 0; j < workExperience.details.length; ++j)
+				cv.text(24, yOffset + 15 + 7 * j, '\u2022 ' + workExperience.details[j]);
+			yOffset += height;
+		}
+		let headerPasted = false;
+		for (i = 0; i < resumeEducation.length; ++i) {
+			let education = resumeEducation[i];
+			let height = 19 + 7 * education.details.length;
+			if (!headerPasted)
+				height += 16;
+			if (yOffset + height > 280) {
+				cv.addPage();
+				yOffset = 20;
+			}
+			if (!headerPasted) {
+				cv.setFont('helvetica', 'normal');
+				cv.setFontSize(16);
+				cv.text(18, yOffset + 4, 'EDUCATION');
+				cv.line(10, yOffset + 7, 200, yOffset + 7);
+				yOffset += 16;
+				height -= 16;
+				headerPasted = true;
+			}
+			cv.setFont('helvetica', 'bold');
+			cv.setFontSize(14);
+			cv.text(16, yOffset, education.name + ', ' + education.location);
+			cv.setFont('helvetica', 'normal');
+			cv.setFontSize(16);
+			cv.text(21, yOffset + 8, education.summary);
+			cv.setFontSize(12);
+			cv.text(195, yOffset + 8, education.started + ' - ' + education.ended, null, null, 'right');
+			cv.setFontSize(13);
+			let j;
+			for (j = 0; j < education.details.length; ++j)
+				cv.text(24, yOffset + 15 + 7 * j, '\u2022 ' + education.details[j]);
+			yOffset += height;
+		}
+		if (yOffset + 16 + 7 > 280) {
+			cv.addPage();
+			yOffset = 20;
+		}
+		cv.setFont('helvetica', 'normal');
+		cv.setFontSize(16);
+		cv.text(18, yOffset + 4, 'TECHNICAL SKILLS');
+		cv.line(10, yOffset + 7, 200, yOffset + 7);
+		yOffset += 16;
+		for (i = 0; i < resumeTechnicalSkills.length; ++i) {
+			let technicalSkills = resumeTechnicalSkills[i];
+			if (yOffset + 7 > 280) {
+				cv.addPage();
+				yOffset = 20;
+			}
+			cv.setFont('helvetica', 'normal');
+			cv.setFontSize(13);
+			cv.text(24, yOffset, '\u2022 ' + technicalSkills.section + ': ' + technicalSkills.skills);
+			yOffset += 7;
+		}
+		if (yOffset + 16 + 7 > 280) {
+			cv.addPage();
+			yOffset = 20;
+		}
+		cv.setFont('helvetica', 'normal');
+		cv.setFontSize(16);
+		cv.text(18, yOffset + 4, 'MISCELLANEOUS');
+		cv.line(10, yOffset + 7, 200, yOffset + 7);
+		yOffset += 16;
+		for (i = 0; i < resumeMiscellaneous.length; ++i) {
+			let miscellaneous = resumeMiscellaneous[i];
+			if (yOffset + 7 > 280) {
+				cv.addPage();
+				yOffset = 20;
+			}
+			cv.setFont('helvetica', 'normal');
+			cv.setFontSize(13);
+			cv.text(24, yOffset, '\u2022 ' + miscellaneous.section + ': ' + miscellaneous.skills);
+			yOffset += 7;
+		}
+		cv.save('ajunakovic-resume-' + (new Date()).toISOString().split('T')[0] + '.pdf');
+	}
+	$.getJSON('/data/resume.json').then(async function(json) {
+		resumeWorkExperience = json.workExperience;
+		resumeEducation = json.education;
+		resumeTechnicalSkills = json.technicalSkills;
+		resumeMiscellaneous = json.miscellaneous;
+		resumeLoaded = true;
+		let i;
+		for (i = 0; i < resumeWorkExperience.length; ++i) {
+			let workExperience = resumeWorkExperience[i];
+			let html =
+				'<div class="col-12">\n' +
+				'	<h5>&nbsp;' + workExperience.name + ', ' + workExperience.location + '</h5>\n' +
+				'	<span>&nbsp;&nbsp;' + workExperience.summary + ' <i>(' + workExperience.started + ' - ' + workExperience.ended + ')</i></span>\n' +
+				'	<ul>\n';
+			let j;
+			for (j = 0; j < workExperience.details.length; ++j)
+				html += '		<li>' + workExperience.details[j] + '</li>\n';
+			html +=
+				'	</ul>\n' +
+				'</div>';
+			$('#resume-work-experience').append(html);
+		}
+		for (i = 0; i < resumeEducation.length; ++i) {
+			let education = resumeEducation[i];
+			let html =
+				'<div class="col-12">\n' +
+				'	<h5>&nbsp;' + education.name + ', ' + education.location + '</h5>\n' +
+				'	<span>&nbsp;&nbsp;' + education.summary + ' <i>(' + education.started + ' - ' + education.ended + ')</i></span>\n' +
+				'	<ul>\n';
+			let j;
+			for (j = 0; j < education.details.length; ++j)
+				html += '		<li>' + education.details[j] + '</li>\n';
+			html +=
+				'	</ul>\n' +
+				'</div>';
+			$('#resume-education').append(html);
+		}
+		let html =
+			'<div class="col-12">\n' +
+			'	<ul>\n';
+		for (i = 0; i < resumeTechnicalSkills.length; ++i)
+			html += '		<li>' + resumeTechnicalSkills[i].section + ': <strong>' + resumeTechnicalSkills[i].skills + '</strong></li>\n';
+		html +=
+			'	</ul>\n' +
+			'</div>';
+		$('#resume-technical-skills').append(html);
+		html =
+			'<div class="col-12">\n' +
+			'	<ul>\n';
+		for (i = 0; i < resumeMiscellaneous.length; ++i)
+			html += '		<li>' + resumeMiscellaneous[i].section + ': <strong>' + resumeMiscellaneous[i].skills + '</strong></li>\n';
+		html +=
+			'	</ul>\n' +
+			'</div>';
+		$('#resume-miscellaneous').append(html);
+		$('#resume-content').animate({opacity: 1.0}, 300);
+		completeLoad();
+	}).catch(async function() {
+		$('#resume-content').html('<span class="resume-error">Failed to load r&#233;sum&#233; content.</span>');
+		$('#resume-content').removeClass('section-invisible');
+		completeLoad();
+	});
+</script>
+<button class="btn btn-primary mt-2" type="button" onclick="downloadResume()">Download PDF</button>
+<div id="resume-content" class="section-invisible mt-3">
+	<h2 class="mt-4">Work experience</h2>
+	<div id="resume-work-experience" class="row"></div>
+	<h2 class="mt-4">Education</h2>
+	<div id="resume-education" class="row"></div>
+	<h2 class="mt-4">Technical skills</h2>
+	<div id="resume-technical-skills" class="row"></div>
+	<h2 class="mt-4">Miscellaneous</h2>
+	<div id="resume-miscellaneous" class="row"></div>
+</div>
