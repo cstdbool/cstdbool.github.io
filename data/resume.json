@@ -17,9 +17,9 @@
 			"location": "Zagreb, Croatia",
 			"summary": "B.Sc. in Computer Science",
 			"details": [
-				"Implementation of physically based rendering (PBR), 3D computer graphics",
-				"Reverse engineering and malware analysis, x86 assembly development",
-				"Network programming and server programming, Berkeley sockets (BSD)"
+				"Implementation of physically based rendering (PBR); 3D computer graphics",
+				"Reverse engineering and malware analysis; x86 assembly development",
+				"Network programming and server programming; Berkeley sockets (FreeBSD)"
 			],
 			"started": "September 2016",
 			"ended": "July 2019"
@@ -36,7 +36,7 @@
 		},
 		{
 			"section": "Tools",
-			"skills": "CMake, GCC, Clang, MSVC, Doxygen, Git"
+			"skills": "CMake, GCC, Clang, MSVC, Doxygen, Git, Visual Studio"
 		}
 	],
 	"miscellaneous": [
