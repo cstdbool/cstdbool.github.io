@@ -1,5 +1,5 @@
 <h1 id="manual-complete-load">Contributions</h1>
-<p>A complete list of my contributions to open-source projects.</p>
+<p id="contributions-info">A complete list of my contributions to open-source projects.</p>
 <div id="contributions-container" class="container">
 	<div id="contributions-list" class="row"></div>
 </div>
@@ -42,14 +42,20 @@
 		return numberOfCommits;
 	}
 	$.getJSON('/data/contributions.json').then(async function(json) {
-		let i, loaded = 0;
+		let i, loaded = 0, needed = json.length;
 		for (i = 0; i < json.length; ++i) {
 			let contribution = json[i];
-			if ((contribution.name == null) || (contribution.description == null))
+			if ((contribution.name == null) || (contribution.description == null)) {
+				if (loaded == --needed)
+					completeLoad();
 				continue;
+			}
 			if (contribution.icon == null) {
-				if (contribution.owner == null)
+				if (contribution.owner == null) {
+					if (loaded == --needed)
+						completeLoad();
 					continue;
+				}
 				contribution.icon = 'https://github.com/' + contribution.owner + '.png?size=200';
 			}
 			if ((contribution.owner != null) && (contribution.repo != null)) {
@@ -74,9 +80,13 @@
 				'</div>';
 			$('#contributions-list').append(html);
 			$('#contribution-' + i.toString()).animate({opacity: 1.0}, 300, function() {
-				if (++loaded == json.length)
+				if (++loaded == needed)
 					completeLoad();
 			});
+		}
+		if (needed == 0) {
+			$('#contributions-info').html('No contributions yet.');
+			completeLoad();
 		}
 	}).catch(async function() {
 		showContributionsError('Failed to load the list of contributions.');
