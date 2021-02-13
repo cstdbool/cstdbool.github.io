@@ -6,6 +6,14 @@
 	var resumeTechnicalSkills = null;
 	var resumeMiscellaneous = null;
 	var resumeLoaded = false;
+	function getDetailsLineCount(details, index = null) {
+		if ((index == null) || (index > details.length))
+			index = details.length;
+		let i, count = 0;
+		for (i = 0; i < index; ++i)
+			count += details[i].split('\n').length;
+		return count;
+	}
 	function downloadResume() {
 		if (!resumeLoaded)
 			return;
@@ -29,7 +37,7 @@
 		let yOffset = 62;
 		for (i = 0; i < resumeWorkExperience.length; ++i) {
 			let workExperience = resumeWorkExperience[i];
-			let height = 19 + 7 * workExperience.details.length;
+			let height = 19 + 7 * getDetailsLineCount(workExperience.details);
 			if (yOffset + height > 280) {
 				cv.addPage();
 				yOffset = 20;
@@ -43,15 +51,17 @@
 			cv.setFontSize(12);
 			cv.text(195, yOffset + 8, workExperience.started + ' - ' + workExperience.ended, null, null, 'right');
 			cv.setFontSize(13);
+			cv.setLineHeightFactor(1.53);
 			let j;
 			for (j = 0; j < workExperience.details.length; ++j)
-				cv.text(24, yOffset + 15 + 7 * j, '\u2022 ' + workExperience.details[j]);
+				cv.text(24, yOffset + 15 + 7 * getDetailsLineCount(workExperience.details, j), '\u2022 ' + workExperience.details[j].split('\n').join('\n  '));
+			cv.setLineHeightFactor(1.15);
 			yOffset += height;
 		}
 		let headerPasted = false;
 		for (i = 0; i < resumeEducation.length; ++i) {
 			let education = resumeEducation[i];
-			let height = 19 + 7 * education.details.length;
+			let height = 19 + 7 * getDetailsLineCount(education.details);
 			if (!headerPasted)
 				height += 16;
 			if (yOffset + height > 280) {
@@ -76,9 +86,11 @@
 			cv.setFontSize(12);
 			cv.text(195, yOffset + 8, education.started + ' - ' + education.ended, null, null, 'right');
 			cv.setFontSize(13);
+			cv.setLineHeightFactor(1.53);
 			let j;
 			for (j = 0; j < education.details.length; ++j)
-				cv.text(24, yOffset + 15 + 7 * j, '\u2022 ' + education.details[j]);
+				cv.text(24, yOffset + 15 + 7 * getDetailsLineCount(education.details, j), '\u2022 ' + education.details[j].split('\n').join('\n  '));
+			cv.setLineHeightFactor(1.15);
 			yOffset += height;
 		}
 		if (yOffset + 16 + 7 > 280) {
