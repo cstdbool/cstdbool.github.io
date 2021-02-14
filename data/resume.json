@@ -28,25 +28,25 @@
 	"technicalSkills": [
 		{
 			"section": "Languages",
-			"skills": "C, C++, C#"
+			"skills": "C, C++, C# (advanced), SQL, Lua, Visual Basic, HTML, CSS,\nJavaScript (intermediate), Java, Python (basic)"
 		},
 		{
 			"section": "Technologies",
-			"skills": "OpenGL, WinAPI, Berkeley sockets, .NET"
+			"skills": "OpenGL, WinAPI, Berkeley sockets, .NET (advanced skill),\nLinux (intermediate), Direct3D, CUDA, OpenCL (basic)"
 		},
 		{
 			"section": "Tools",
-			"skills": "CMake, GCC, Clang, MSVC, Doxygen, Git, Visual Studio"
+			"skills": "Git, Visual Studio, Visual Studio Code, MSVC, GCC, MinGW-w64,\nClang, CMake, Doxygen, Unity (advanced), Stride (intermediate), Unreal\nEngine, Godot (basic)"
 		}
 	],
 	"miscellaneous": [
 		{
 			"section": "Languages",
-			"skills": "Croatian (native), English (fluent), Italian (basic)"
+			"skills": "Croatian (native), English (fluent), Italian (elementary)"
 		},
 		{
 			"section": "Interests",
-			"skills": "3D graphics and animation, game development, emulation, low-level"
+			"skills": "3D graphics and rendering, game development, game engine\ndevelopment, hardware emulation, hardware simulation, low-level software\ndevelopment"
 		}
 	]
 }
