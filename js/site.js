@@ -1,5 +1,15 @@
 var loadInProgress = true;
 
+function numberToEasilyReadableString(number) {
+	if (number < 1000)
+		return number.toString();
+	if (number < 1000000)
+		return (Math.round(number / 100) / 10).toString() + 'k';
+	if (number < 1000000000)
+		return (Math.round(number / 100000) / 10).toString() + 'm';
+	return (Math.round(number / 100000000) / 10).toString() + 'b';
+}
+
 function openPage(address) {
 	if (loadInProgress)
 		return;

@@ -41,11 +41,6 @@
 			$('#cache').append('<div id="' + cacheKey + '">' + (numberOfCommits ?? '').toString() + '</div>');
 		return numberOfCommits;
 	}
-	function numberToEasilyReadableString(number) {
-		if (number < 1000)
-			return number.toString();
-		return (Math.round(number / 100) / 10).toString() + 'k';
-	}
 	$.getJSON('/data/contributions.json').then(async function(json) {
 		let i, loaded = 0, needed = json.length;
 		for (i = 0; i < json.length; ++i) {
@@ -69,6 +64,8 @@
 				if (contribution.commitsLink == null)
 					contribution.commitsLink = 'https://github.com/' + contribution.owner + '/' + contribution.repo + '/commits?author=cstdbool';
 			}
+			if (contribution.webLink == null)
+				contribution.webLink = contribution.repoLink;
 			let numberOfCommits = await findNumberOfCommits(contribution.owner, contribution.repo);
 			let html =
 				'<div id="contribution-' + i.toString() + '" class="col-12 mt-4 section-invisible">\n' +
@@ -79,8 +76,8 @@
 				'		<div class="col-8 col-sm-10">\n' +
 				'			<h3>' + contribution.name + '</h3>\n' +
 				'			<p><small>' + contribution.description + '</small></p>\n' +
-				'			' + ((contribution.repoLink != null) ? ('<a class="text-decoration-none" href="' + contribution.repoLink + '">Open</a>\n') : '') +
-				'			' + (((contribution.repoLink != null) && ((contribution.commitsLink != null) || (numberOfCommits != null))) ? '&bull;\n' : '') +
+				'			' + ((contribution.webLink != null) ? ('<a class="text-decoration-none" href="' + contribution.webLink + '">Web</a>\n') : '') +
+				'			' + (((contribution.webLink != null) && ((contribution.commitsLink != null) || (numberOfCommits != null))) ? '&bull;\n' : '') +
 				'			' + (((contribution.commitsLink != null) || (numberOfCommits != null)) ? (((contribution.commitsLink != null) ? ('<a class="text-decoration-none" href="' + contribution.commitsLink + '">') : '') + ((numberOfCommits != null) ? numberToEasilyReadableString(numberOfCommits) : 'View') + ' commit' + (((numberOfCommits ?? 0) == 1) ? '' : 's') + ((contribution.commitsLink != null) ? '</a>' : '') + '\n') : '') +
 				'		</div>\n' +
 				'	</div>\n' +
