@@ -41,6 +41,11 @@
 			$('#cache').append('<div id="' + cacheKey + '">' + (numberOfCommits ?? '').toString() + '</div>');
 		return numberOfCommits;
 	}
+	function numberToEasilyReadableString(number) {
+		if (number < 1000)
+			return number.toString();
+		return (Math.round(number / 100) / 10).toString() + 'k';
+	}
 	$.getJSON('/data/contributions.json').then(async function(json) {
 		let i, loaded = 0, needed = json.length;
 		for (i = 0; i < json.length; ++i) {
@@ -74,7 +79,9 @@
 				'		<div class="col-8 col-sm-10">\n' +
 				'			<h3>' + contribution.name + '</h3>\n' +
 				'			<p><small>' + contribution.description + '</small></p>\n' +
-				'			<a class="text-decoration-none" href="' + contribution.commitsLink + '">' + ((numberOfCommits != null) ? numberOfCommits.toString() : 'View') + ' commit' + (((numberOfCommits ?? 0) == 1) ? '' : 's') + '</a>\n' +
+				'			' + ((contribution.repoLink != null) ? ('<a class="text-decoration-none" href="' + contribution.repoLink + '">Open</a>\n') : '') +
+				'			' + (((contribution.repoLink != null) && ((contribution.commitsLink != null) || (numberOfCommits != null))) ? '&bull;\n' : '') +
+				'			' + (((contribution.commitsLink != null) || (numberOfCommits != null)) ? (((contribution.commitsLink != null) ? ('<a class="text-decoration-none" href="' + contribution.commitsLink + '">') : '') + ((numberOfCommits != null) ? numberToEasilyReadableString(numberOfCommits) : 'View') + ' commit' + (((numberOfCommits ?? 0) == 1) ? '' : 's') + ((contribution.commitsLink != null) ? '</a>' : '') + '\n') : '') +
 				'		</div>\n' +
 				'	</div>\n' +
 				'</div>';
