@@ -3,6 +3,8 @@
 <script>
 	var resumeWorkExperience = null;
 	var resumeEducation = null;
+	var resumeProjects = null;
+	var resumeContributions = null;
 	var resumeTechnicalSkills = null;
 	var resumeMiscellaneous = null;
 	var resumeLoaded = false;
@@ -13,6 +15,54 @@
 		for (i = 0; i < index; ++i)
 			count += details[i].split('\n').length;
 		return count;
+	}
+	function writeSection(cv, yOffset, sectionName, sectionData) {
+		if ((sectionData == null) || (sectionData.length == 0))
+			return yOffset;
+		let headerPasted = false;
+		let i;
+		for (i = 0; i < sectionData.length; ++i) {
+			let item = sectionData[i];
+			if ((item.name == null) || (item.description == null))
+				continue;
+			if ((item.repoLink == null) && (item.owner != null) && (item.repo != null))
+				item.repoLink = 'https://github.com/' + item.owner + '/' + item.repo;
+			if (item.webLink == null)
+				item.webLink = item.repoLink;
+			let height = 11 + 7 * (item.description.split('\n').length + ((item.webLink != null) ? 1 : 0) + ((item.repoLink != null) ? 1 : 0));
+			if (!headerPasted)
+				height += 16;
+			if (yOffset + height > 280) {
+				cv.addPage();
+				yOffset = 20;
+			}
+			if (!headerPasted) {
+				cv.setFont('helvetica', 'normal');
+				cv.setFontSize(16);
+				cv.text(18, yOffset + 4, sectionName);
+				cv.line(10, yOffset + 7, 200, yOffset + 7);
+				yOffset += 16;
+				height -= 16;
+				headerPasted = true;
+			}
+			cv.setFont('helvetica', 'normal');
+			cv.setFontSize(16);
+			cv.text(21, yOffset, item.name);
+			if (item.language != null) {
+				cv.setFontSize(12);
+				cv.text(195, yOffset, item.language, null, null, 'right');
+			}
+			cv.setFontSize(13);
+			cv.setLineHeightFactor(1.53);
+			cv.text(24, yOffset + 7, '\u2022 ' + item.description.split('\n').join('\n  '));
+			cv.setLineHeightFactor(1.15);
+			if (item.webLink != null)
+				cv.text(24, yOffset + 7 + 7 * item.description.split('\n').length, '\u2022 Web: ' + item.webLink);
+			if (item.repoLink != null)
+				cv.text(24, yOffset + 7 + 7 * item.description.split('\n').length + ((item.webLink != null) ? 7 : 0), '\u2022 Git: ' + item.repoLink);
+			yOffset += height;
+		}
+		return yOffset;
 	}
 	function downloadResume() {
 		if (!resumeLoaded)
@@ -93,6 +143,8 @@
 			cv.setLineHeightFactor(1.15);
 			yOffset += height;
 		}
+		yOffset = writeSection(cv, yOffset, 'PROJECTS', resumeProjects);
+		yOffset = writeSection(cv, yOffset, 'CONTRIBUTIONS', resumeContributions);
 		if (yOffset + 16 + 7 * resumeTechnicalSkills[0].skills.split('\n').length > 280) {
 			cv.addPage();
 			yOffset = 20;
@@ -144,6 +196,16 @@
 		resumeEducation = json.education;
 		resumeTechnicalSkills = json.technicalSkills;
 		resumeMiscellaneous = json.miscellaneous;
+		await $.getJSON('/data/projects.json').then(async function(json) {
+			resumeProjects = json;
+		}).catch(async function() {
+			resumeProjects = null;
+		});
+		await $.getJSON('/data/contributions.json').then(async function(json) {
+			resumeContributions = json;
+		}).catch(async function() {
+			resumeContributions = null;
+		});
 		resumeLoaded = true;
 		let i;
 		for (i = 0; i < resumeWorkExperience.length; ++i) {

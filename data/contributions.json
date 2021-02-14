@@ -1,7 +1,8 @@
 [
 	{
 		"name": "Stride Game Engine",
-		"description": "Stride (formerly Xenko, formerly Paradox) is a free and open-source 2D and 3D cross-platform game engine originally developed by Silicon Studio. It can be used to create video games for PC and mobile devices, and virtual reality.",
+		"language": "C#",
+		"description": "Stride (formerly Xenko, formerly Paradox) is a free and open-source 2D\nand 3D cross-platform game engine originally developed by Silicon Studio.\nIt can be used to create video games for PC and mobile devices, and virtual\nreality.",
 		"owner": "stride3d",
 		"repo": "stride",
 		"webLink": "https://stride3d.net/"
