@@ -1,2 +1,84 @@
-<h1>Projects</h1>
-<p>No projects yet.</p>
+<h1 id="manual-complete-load">Projects</h1>
+<p id="projects-info">List of open-source projects that I have created.</p>
+<div id="projects-container" class="container">
+	<div id="projects-list" class="row"></div>
+</div>
+<script>
+	function showProjectsError(message) {
+		$('#projects-container').removeClass('container');
+		$('#projects-container').html('<span class="projects-error">' + message + '</span>');
+	}
+	async function findNumberOfStars(owner, repo) {
+		if ((owner == null) || (repo == null))
+			return null;
+		let cacheKey = 'number-of-stars_' + owner + '_' + repo;
+		let numberOfStars = (($('#' + cacheKey).length > 0) ? $('#' + cacheKey).html() : null);
+		if (numberOfStars == '')
+			numberOfStars = null;
+		else if (numberOfStars != null)
+			return parseInt(numberOfStars, 10);
+		await $.getJSON('https://api.github.com/repos/' + owner + '/' + repo).then(async function(json) {
+			numberOfStars = json.stargazers_count;
+		}).catch(async function() {
+			numberOfStars = null;
+		});
+		if ($('#' + cacheKey).length == 0)
+			$('#cache').append('<div id="' + cacheKey + '">' + (numberOfStars ?? '').toString() + '</div>');
+		return numberOfStars;
+	}
+	$.getJSON('/data/projects.json').then(async function(json) {
+		let i, loaded = 0, needed = json.length;
+		for (i = 0; i < json.length; ++i) {
+			let project = json[i];
+			if ((project.name == null) || (project.description == null)) {
+				if (loaded == --needed)
+					completeLoad();
+				continue;
+			}
+			if (project.icon == null) {
+				if (project.owner == null) {
+					if (loaded == --needed)
+						completeLoad();
+					continue;
+				}
+				project.icon = 'https://github.com/' + project.owner + '.png?size=200';
+			}
+			if ((project.owner != null) && (project.repo != null)) {
+				if (project.repoLink == null)
+					project.repoLink = 'https://github.com/' + project.owner + '/' + project.repo;
+				if (project.starsLink == null)
+					project.starsLink = 'https://github.com/' + project.owner + '/' + project.repo + '/stargazers';
+			}
+			if (project.webLink == null)
+				project.webLink = project.repoLink;
+			let numberOfStars = await findNumberOfStars(project.owner, project.repo);
+			let html =
+				'<div id="project-' + i.toString() + '" class="col-12 mt-4 section-invisible">\n' +
+				'	<div class="row">\n' +
+				'		<div class="col-4 col-sm-2">\n' +
+				'			' + ((project.repoLink != null) ? ('<a href="' + project.repoLink + '">') : '') + '<img class="w-100" src="' + project.icon + '" alt="' + project.name + '">' + ((project.repoLink != null) ? '</a>' : '') + '\n' +
+				'		</div>\n' +
+				'		<div class="col-8 col-sm-10">\n' +
+				'			<h3>' + project.name + '</h3>\n' +
+				'			<p><small>' + project.description + '</small></p>\n' +
+				'			' + ((project.webLink != null) ? ('<a class="text-decoration-none" href="' + project.webLink + '">Web</a>\n') : '') +
+				'			' + (((project.webLink != null) && ((project.starsLink != null) || (numberOfStars != null))) ? '&bull;\n' : '') +
+				'			' + (((project.starsLink != null) || (numberOfStars != null)) ? (((project.starsLink != null) ? ('<a class="text-decoration-none" href="' + project.starsLink + '">') : '') + ((numberOfStars != null) ? numberToEasilyReadableString(numberOfStars) : 'View') + ' star' + (((numberOfStars ?? 0) == 1) ? '' : 's') + ((project.starsLink != null) ? '</a>' : '') + '\n') : '') +
+				'		</div>\n' +
+				'	</div>\n' +
+				'</div>';
+			$('#projects-list').append(html);
+			$('#project-' + i.toString()).animate({opacity: 1.0}, 300, function() {
+				if (++loaded == needed)
+					completeLoad();
+			});
+		}
+		if (needed == 0) {
+			$('#projects-info').html('No projects yet.');
+			completeLoad();
+		}
+	}).catch(async function() {
+		showProjectsError('Failed to load the list of projects.');
+		completeLoad();
+	});
+</script>

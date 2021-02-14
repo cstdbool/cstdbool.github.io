@@ -21,6 +21,11 @@ body {
 	border-radius: 10px;
 }
 
+.projects-error {
+	color: red;
+	font-style: italic;
+}
+
 .contributions-error {
 	color: red;
 	font-style: italic;
