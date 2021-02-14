@@ -93,7 +93,7 @@
 			cv.setLineHeightFactor(1.15);
 			yOffset += height;
 		}
-		if (yOffset + 16 + 7 > 280) {
+		if (yOffset + 16 + 7 * resumeTechnicalSkills[0].skills.split('\n').length > 280) {
 			cv.addPage();
 			yOffset = 20;
 		}
@@ -104,16 +104,18 @@
 		yOffset += 16;
 		for (i = 0; i < resumeTechnicalSkills.length; ++i) {
 			let technicalSkills = resumeTechnicalSkills[i];
-			if (yOffset + 7 > 280) {
+			if (yOffset + 7 * technicalSkills.skills.split('\n').length > 280) {
 				cv.addPage();
 				yOffset = 20;
 			}
 			cv.setFont('helvetica', 'normal');
 			cv.setFontSize(13);
-			cv.text(24, yOffset, '\u2022 ' + technicalSkills.section + ': ' + technicalSkills.skills);
-			yOffset += 7;
+			cv.setLineHeightFactor(1.53);
+			cv.text(24, yOffset, '\u2022 ' + technicalSkills.section + ': ' + technicalSkills.skills.split('\n').join('\n  '));
+			cv.setLineHeightFactor(1.15);
+			yOffset += 7 * technicalSkills.skills.split('\n').length;
 		}
-		if (yOffset + 16 + 7 > 280) {
+		if (yOffset + 16 + 7 * resumeMiscellaneous[0].skills.split('\n').length > 280) {
 			cv.addPage();
 			yOffset = 20;
 		}
@@ -124,14 +126,16 @@
 		yOffset += 16;
 		for (i = 0; i < resumeMiscellaneous.length; ++i) {
 			let miscellaneous = resumeMiscellaneous[i];
-			if (yOffset + 7 > 280) {
+			if (yOffset + 7 * miscellaneous.skills.split('\n').length > 280) {
 				cv.addPage();
 				yOffset = 20;
 			}
 			cv.setFont('helvetica', 'normal');
 			cv.setFontSize(13);
-			cv.text(24, yOffset, '\u2022 ' + miscellaneous.section + ': ' + miscellaneous.skills);
-			yOffset += 7;
+			cv.setLineHeightFactor(1.53);
+			cv.text(24, yOffset, '\u2022 ' + miscellaneous.section + ': ' + miscellaneous.skills.split('\n').join('\n  '));
+			cv.setLineHeightFactor(1.15);
+			yOffset += 7 * miscellaneous.skills.split('\n').length;
 		}
 		cv.save('ajunakovic-resume-' + (new Date()).toISOString().split('T')[0] + '.pdf');
 	}
@@ -204,6 +208,18 @@
 	<div id="resume-work-experience" class="row"></div>
 	<h2 class="mt-4">Education</h2>
 	<div id="resume-education" class="row"></div>
+	<h2 class="mt-4">Projects</h2>
+	<div id="resume-projects" class="row">
+		<div class="col-12">
+			<button class="btn btn-link text-decoration-none" type="button" onclick="openPage('/projects.html')">View list of projects</button>
+		</div>
+	</div>
+	<h2 class="mt-4">Contributions</h2>
+	<div id="resume-contributions" class="row">
+		<div class="col-12">
+			<button class="btn btn-link text-decoration-none" type="button" onclick="openPage('/contributions.html')">View list of contributions</button>
+		</div>
+	</div>
 	<h2 class="mt-4">Technical skills</h2>
 	<div id="resume-technical-skills" class="row"></div>
 	<h2 class="mt-4">Miscellaneous</h2>
