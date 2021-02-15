@@ -28,21 +28,21 @@
 	"technicalSkills": [
 		{
 			"section": "Languages",
-			"skills": "C, C++, C# (advanced), SQL, Lua, Visual Basic, HTML, CSS,\nJavaScript (intermediate), Java, Python (basic)"
+			"skills": "C, C++, C# (advanced skill), SQL, Lua, Visual Basic, HTML,\nCSS, JavaScript (intermediate skill), Java, Python (basic skill)"
 		},
 		{
 			"section": "Technologies",
-			"skills": "OpenGL, WinAPI, Berkeley sockets, .NET (advanced skill),\nLinux (intermediate), Direct3D, CUDA, OpenCL (basic)"
+			"skills": "OpenGL, WinAPI, Berkeley sockets, .NET (advanced skill),\nLinux (intermediate skill), Direct3D, CUDA, OpenCL (basic skill)"
 		},
 		{
 			"section": "Tools",
-			"skills": "Git, Visual Studio, Visual Studio Code, MSVC, GCC, MinGW-w64,\nClang, CMake, Doxygen, Unity (advanced), Stride (intermediate), Unreal\nEngine, Godot (basic)"
+			"skills": "Git, Visual Studio, Visual Studio Code, MSVC, GCC, MinGW-w64,\nClang, CMake, Doxygen, Unity (advanced skill), Stride (intermediate skill),\nUnreal Engine, Godot (basic skill)"
 		}
 	],
 	"miscellaneous": [
 		{
 			"section": "Languages",
-			"skills": "Croatian (native), English (fluent), Italian (elementary)"
+			"skills": "Croatian (native proficiency), English (fluent proficiency),\nItalian (elementary proficiency)"
 		},
 		{
 			"section": "Interests",
