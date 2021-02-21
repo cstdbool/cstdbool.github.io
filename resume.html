@@ -1,6 +1,8 @@
 <h1 id="manual-complete-load">R&#233;sum&#233;</h1>
 <p>Click the button below to download my auto-generated r&#233;sum&#233; as a PDF document.</p>
 <script>
+	var useMonthNameAbbreviations = true;
+	var useYearMonthAbbreviations = true;
 	var resumeWorkExperience = null;
 	var resumeEducation = null;
 	var resumeProjects = null;
@@ -8,6 +10,21 @@
 	var resumeTechnicalSkills = null;
 	var resumeMiscellaneous = null;
 	var resumeLoaded = false;
+	function getMonthNames() {
+		if (useMonthNameAbbreviations)
+			return [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+		return [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
+	}
+	function formatYearsString(years, str) {
+		if (useYearMonthAbbreviations)
+			return ((str != null) ? (str + ' ') : '') + years.toString() + ' yr' + ((years != 1) ? 's' : '') + '.';
+		return ((str != null) ? (str + ' ') : '') + years.toString() + ' year' + ((years != 1) ? 's' : '');
+	}
+	function formatMonthsString(months, str) {
+		if (useYearMonthAbbreviations)
+			return ((str != null) ? (str + ' ') : '') + months.toString() + ' mo' + ((months != 1) ? 's' : '') + '.';
+		return ((str != null) ? (str + ' ') : '') + months.toString() + ' month' + ((months != 1) ? 's' : '');
+	}
 	function getDetailsLineCount(details, index = null) {
 		if ((index == null) || (index > details.length))
 			index = details.length;
@@ -15,6 +32,41 @@
 		for (i = 0; i < index; ++i)
 			count += details[i].split('\n').length;
 		return count;
+	}
+	function getYearMonthAsDate(yearMonth) {
+		if (yearMonth == null)
+			return new Date();
+		let yearMonthParts = yearMonth.toString().split('-');
+		if (yearMonthParts.length < 2)
+			return null;
+		let year = parseInt(yearMonthParts[0]), month = parseInt(yearMonthParts[1]);
+		if ((year == null) || (year < 1997) || (month == null) || (month < 1) || (month > 12))
+			return null;
+		return new Date(year, month - 1);
+	}
+	function getYearMonthAsEasilyReadableString(yearMonth) {
+		if (yearMonth == null)
+			return 'Ongoing';
+		let date = getYearMonthAsDate(yearMonth);
+		if (date == null)
+			return 'Unknown';
+		return getMonthNames()[date.getMonth()] + ' ' + date.getFullYear().toString();
+	}
+	function getPeriodAsEasilyReadableString(started, ended) {
+		let startedDate = getYearMonthAsDate(started), endedDate = getYearMonthAsDate(ended);
+		if ((startedDate == null) || (endedDate == null))
+			return 'Unknown';
+		let deltaMonths = 12 * (endedDate.getFullYear() - startedDate.getFullYear()) + (endedDate.getMonth() - startedDate.getMonth());
+		let years = Math.floor(deltaMonths / 12);
+		let months = deltaMonths % 12;
+		let str = null;
+		if (years > 0)
+			str = formatYearsString(years, str);
+		if (months > 0)
+			str = formatMonthsString(months, str);
+		if (str == null)
+			str = 'Less than a month';
+		return str;
 	}
 	function writeSection(cv, yOffset, sectionName, sectionData) {
 		if ((sectionData == null) || (sectionData.length == 0))
@@ -48,9 +100,9 @@
 			cv.setFont('helvetica', 'normal');
 			cv.setFontSize(16);
 			cv.text(21, yOffset, item.name);
-			if (item.language != null) {
+			if (item.languages != null) {
 				cv.setFontSize(12);
-				cv.text(195, yOffset, item.language, null, null, 'right');
+				cv.text(195, yOffset, item.languages.join(', '), null, null, 'right');
 			}
 			cv.setFontSize(13);
 			cv.setLineHeightFactor(1.53);
@@ -99,7 +151,7 @@
 			cv.setFontSize(16);
 			cv.text(21, yOffset + 8, workExperience.summary);
 			cv.setFontSize(12);
-			cv.text(195, yOffset + 8, workExperience.started + ' - ' + workExperience.ended, null, null, 'right');
+			cv.text(195, yOffset + 8, getPeriodAsEasilyReadableString(workExperience.started, workExperience.ended) + ' (' + getYearMonthAsEasilyReadableString(workExperience.started) + ' - ' + getYearMonthAsEasilyReadableString(workExperience.ended) + ')', null, null, 'right');
 			cv.setFontSize(13);
 			cv.setLineHeightFactor(1.53);
 			let j;
@@ -134,7 +186,7 @@
 			cv.setFontSize(16);
 			cv.text(21, yOffset + 8, education.summary);
 			cv.setFontSize(12);
-			cv.text(195, yOffset + 8, education.started + ' - ' + education.ended, null, null, 'right');
+			cv.text(195, yOffset + 8, getPeriodAsEasilyReadableString(education.started, education.ended) + ' (' + getYearMonthAsEasilyReadableString(education.started) + ' - ' + getYearMonthAsEasilyReadableString(education.ended) + ')', null, null, 'right');
 			cv.setFontSize(13);
 			cv.setLineHeightFactor(1.53);
 			let j;
@@ -213,7 +265,7 @@
 			let html =
 				'<div class="col-12">\n' +
 				'	<h5>&nbsp;' + workExperience.name + ', ' + workExperience.location + '</h5>\n' +
-				'	<span>&nbsp;&nbsp;' + workExperience.summary + ' <i>(' + workExperience.started + ' - ' + workExperience.ended + ')</i></span>\n' +
+				'	<span>&nbsp;&nbsp;' + workExperience.summary + ' <i>&ndash; ' + getPeriodAsEasilyReadableString(workExperience.started, workExperience.ended) + ' (' + getYearMonthAsEasilyReadableString(workExperience.started) + ' - ' + getYearMonthAsEasilyReadableString(workExperience.ended) + ')</i></span>\n' +
 				'	<ul>\n';
 			let j;
 			for (j = 0; j < workExperience.details.length; ++j)
@@ -228,7 +280,7 @@
 			let html =
 				'<div class="col-12">\n' +
 				'	<h5>&nbsp;' + education.name + ', ' + education.location + '</h5>\n' +
-				'	<span>&nbsp;&nbsp;' + education.summary + ' <i>(' + education.started + ' - ' + education.ended + ')</i></span>\n' +
+				'	<span>&nbsp;&nbsp;' + education.summary + ' <i>&ndash; ' + getPeriodAsEasilyReadableString(education.started, education.ended) + ' (' + getYearMonthAsEasilyReadableString(education.started) + ' - ' + getYearMonthAsEasilyReadableString(education.ended) + ')</i></span>\n' +
 				'	<ul>\n';
 			let j;
 			for (j = 0; j < education.details.length; ++j)

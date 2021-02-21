@@ -7,8 +7,8 @@
 			"details": [
 				"Development & maintenance of enterprise C++ software and components"
 			],
-			"started": "February 2020",
-			"ended": "Ongoing"
+			"started": "2020-02",
+			"ended": null
 		}
 	],
 	"education": [
@@ -21,8 +21,8 @@
 				"Reverse engineering and malware analysis; x86 assembly development",
 				"Network programming and server programming; Berkeley sockets (FreeBSD)"
 			],
-			"started": "September 2016",
-			"ended": "July 2019"
+			"started": "2016-09",
+			"ended": "2019-07"
 		}
 	],
 	"technicalSkills": [
