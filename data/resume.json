@@ -1,6 +1,16 @@
 {
 	"workExperience": [
 		{
+			"name": "Kod Biro",
+			"location": "Zagreb, Croatia",
+			"summary": "Software Development",
+			"details": [
+				"Development & maintenance of DeepAR SDK, a C++ augmented reality\nframework"
+			],
+			"started": "2021-04",
+			"ended": null
+		},
+		{
 			"name": "AVL-AST",
 			"location": "Zagreb, Croatia",
 			"summary": "Software Development",
@@ -8,7 +18,7 @@
 				"Development & maintenance of enterprise C++ software and components"
 			],
 			"started": "2020-02",
-			"ended": null
+			"ended": "2021-04"
 		}
 	],
 	"education": [
