@@ -1,13 +1,13 @@
 {
 	"workExperience": [
 		{
-			"name": "Kod Biro",
+			"name": "DeepAR",
 			"location": "Zagreb, Croatia",
 			"summary": "Software Development",
 			"details": [
 				"Development & maintenance of DeepAR SDK, a C++ augmented reality\nframework"
 			],
-			"started": "2021-04",
+			"started": "2020-11",
 			"ended": null
 		},
 		{
